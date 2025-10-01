@@ -32,11 +32,48 @@ const QuestionsDisplay = ({ content }) => {
 
 const InterviewPrepAI = () => {
   const [selectedCompany, setSelectedCompany] = useState('Google');
+   const [selectedTopic, setSelectedTopic] = useState('Blockchain');
   const [isLoading, setIsLoading] = useState(false);
   const [generatedQuestions, setGeneratedQuestions] = useState('');
   const [error, setError] = useState('');
 
-  const partners = ['Google', 'Microsoft', 'Amazon', 'Accenture', 'TCS', 'Infosys'];
+  const partners = [
+  "Meta (Facebook)",
+  "Amazon",
+  "Netflix",
+  "Google (Alphabet)",
+  "Microsoft",
+  "Apple",
+  "Tesla",
+  "Nvidia",
+  "Adobe",
+  "Intel",
+  "IBM",
+  "Salesforce",
+  "Oracle",
+  "Spotify",
+  "Twitter (X)"
+]
+
+const topics = [
+  "Data Structures and Algorithms",
+  "Operating Systems",
+  "Computer Networks",
+  "Databases (SQL & NoSQL)",
+  "Object-Oriented Programming",
+  "System Design",
+  "Cloud Computing",
+  "Machine Learning",
+  "Artificial Intelligence",
+  "Cybersecurity",
+  "Web Development",
+  "Mobile App Development",
+  "DevOps & CI/CD",
+  "Big Data",
+  "Blockchain",
+  "Software Testing",
+  "Data Science"
+];
 
   const handleClear = () => {
     setGeneratedQuestions('');
@@ -59,7 +96,8 @@ const InterviewPrepAI = () => {
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
     
     const systemPrompt = "You are an expert career coach specializing in tech recruitment. Your role is to generate interview questions for specific companies.";
-    const userQuery = `Generate 5 common technical and behavioral interview questions for a software engineering role at ${selectedCompany}. For each question, provide a brief, actionable tip on how to best answer it. Format the response clearly with each question as a bolded title.`;
+    const userQuery = `Generate 5 common technical and behavioral interview questions for a software engineering role at ${selectedCompany}, focusing on ${selectedTopic}. For each question, provide a brief, actionable tip on how to best answer it. Format the response clearly with each question as a bolded title.`;
+
 
     const payload = {
         contents: [{ parts: [{ text: userQuery }] }],
@@ -273,6 +311,13 @@ const InterviewPrepAI = () => {
               onChange={(e) => setSelectedCompany(e.target.value)}
             >
               {partners.map(p => <option key={p} value={p}>{p}</option>)}
+            </select>
+             <select
+              className="company-select"
+              value={selectedTopic}
+              onChange={(e) => setSelectedTopic(e.target.value)}
+            >
+              {topics.map(p => <option key={p} value={p}>{p}</option>)}
             </select>
             <button className="generate-btn" onClick={generateInterviewQuestions} disabled={isLoading}>
               {isLoading ? 'Generating...' : 'Generate Questions ✨'}

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
 
 // --- Icon Components (Moved outside the main component to prevent re-creation on re-renders) ---
 const UserIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
@@ -44,7 +45,6 @@ const ResumeBuilder = () => {
 
     const [activeSection, setActiveSection] = useState('personal');
     const [openFaq, setOpenFaq] = useState(0);
-    const resumePreviewRef = useRef(null);
 
     // --- Handlers for Data Changes ---
     const handlePersonalChange = (e) => { const { name, value } = e.target; setResumeData(prev => ({ ...prev, personal: { ...prev.personal, [name]: value } })); };
@@ -91,16 +91,16 @@ const ResumeBuilder = () => {
         setResumeData(prev => ({ ...prev, customSections: list }));
     };
     
-    const handleDownloadPdf = () => {
-        const { jsPDF } = window.jspdf;
-        const html2canvas = window.html2canvas;
-        const input = resumePreviewRef.current;
-        html2canvas(input, { scale: 2 }).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
-            pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-            pdf.save("resume.pdf");
-        });
+    const handleDownload = () => {
+      const element = document.getElementById("resume-preview");
+      const opt = {
+        margin:       0.3,
+        filename:     "resume.pdf",
+        image:        { type: "jpeg", quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: "in", format: "a4", orientation: "portrait" }
+      };
+      html2pdf().from(element).set(opt).save();
     };
     
     const faqData = [
@@ -111,8 +111,6 @@ const ResumeBuilder = () => {
     
     return (
         <>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
             <style>{`
                 /* ... (All CSS styles remain the same) ... */
                 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
@@ -120,8 +118,6 @@ const ResumeBuilder = () => {
                 .resume-builder-page { font-family: 'Lexend', sans-serif; background-color: #F4F7FC; }
                 .rb-container { display: flex; flex-direction: column; min-height: 100vh; }
                 @media (min-width: 1024px) { .rb-container { flex-direction: row; } }
-
-                /* --- Form Panel (Left) --- */
                 .form-panel { width: 100%; padding: 2rem; background-color: #FFFFFF; }
                 @media (min-width: 1024px) { .form-panel { width: 45%; max-height: 100vh; overflow-y: auto; } }
                 .form-header { text-align: center; margin-bottom: 2rem; }
@@ -151,8 +147,6 @@ const ResumeBuilder = () => {
                 .skill-chip button { background: none; border: none; color: #4338CA; cursor: pointer; margin-left: 0.25rem; }
                 .skills-input { flex-grow: 1; border: none; padding: 0.25rem; font-size: 0.9rem; }
                 .skills-input:focus { outline: none; }
-
-                /* --- Preview Panel (Right) --- */
                 .preview-panel { width: 100%; padding: 2rem; background-color: #F4F7FC; }
                 @media (min-width: 1024px) { .preview-panel { width: 55%; max-height: 100vh; overflow-y: auto; } }
                 .resume-preview-sticky { position: sticky; top: 2rem; }
@@ -173,8 +167,6 @@ const ResumeBuilder = () => {
                 .resume-skills-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
                 .resume-skill-chip { background-color: #EEF2FF; color: #4338CA; padding: 0.25rem 0.75rem; border-radius: 0.25rem; font-size: 0.8rem; font-family: 'Lexend', sans-serif; }
                 .download-btn { margin: 1.5rem auto 0 auto; width: 100%; max-width: 800px; display: block; padding: 0.8rem; background-image: linear-gradient(to right, #4F46E5, #8B5CF6); color: white; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; text-align: center; }
-                
-                /* --- FAQ Section --- */
                 .faq-builder-section { padding: 3rem 2rem; background-color: #FFFFFF; }
                 .faq-header { text-align: center; margin-bottom: 2rem; }
                 .faq-accordion { max-width: 800px; margin: 0 auto; }
@@ -311,7 +303,7 @@ const ResumeBuilder = () => {
                     {/* --- PREVIEW PANEL --- */}
                     <div className="preview-panel">
                         <div className="resume-preview-sticky">
-                            <div ref={resumePreviewRef} className="resume-preview">
+                            <div id="resume-preview" className="resume-preview">
                                 <div className="resume-header">
                                     <h1>{resumeData.personal.fullName || 'Your Name'}</h1>
                                     <h2>{resumeData.personal.jobTitle || 'Job Title'}</h2>
@@ -337,14 +329,14 @@ const ResumeBuilder = () => {
                                     <p className="resume-item-content">{section.content}</p>
                                 </div>))}
                             </div>
-                            <button onClick={handleDownloadPdf} className="download-btn">Download as PDF</button>
+                            <button onClick={handleDownload} className="download-btn">Download as PDF</button>
                         </div>
                     </div>
                 </div>
                 
                 <section className="faq-builder-section">
                     <div className="faq-header">
-                        <h2 className="section-title">Frequently Asked Questions</h2>
+                        <h2>Frequently Asked Questions</h2>
                     </div>
                     <div className="faq-accordion">
                         {faqData.map((faq, index) => (
@@ -368,4 +360,3 @@ const ResumeBuilder = () => {
 };
 
 export default ResumeBuilder;
-

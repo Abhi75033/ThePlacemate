@@ -23,7 +23,9 @@ const Header = () => {
     { name: 'Recruiters', path: '/recruiters', icon: <RecruitersIcon /> },
     { name: 'Testimonials', path: '/testimonials', icon: <TestimonialsIcon /> },
     { name: 'Contact', path: '/contact', icon: <ContactIcon /> },
-    {name:"Subscribe", path: '/subscribe', icon:""}
+    
+    {name:"Subscribe", path: '/subscribe', icon:""},
+   
   ];
 
   useEffect(() => {

@@ -48,7 +48,7 @@ const WhyWeChoose = () => {
   }
 
   const handleResume = ()=>{
-    navigate('/reseume_temp')
+    navigate('/resume_builder')
   }
 
   const handleBookInterviewClick = () => {

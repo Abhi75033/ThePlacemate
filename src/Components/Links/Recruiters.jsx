@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RecruitersPage = () => {
   const [openFaq, setOpenFaq] = useState(0); // Initially open the first FAQ
+
+
+  const navigate = useNavigate()
 
   // --- Icon SVGs for Value Props ---
   const TalentIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>);
@@ -158,7 +162,7 @@ const RecruitersPage = () => {
             <p className="recruiters-hero-subtitle">
               Stop sorting through endless unqualified resumes. We provide a pipeline of pre-vetted, job-ready candidates trained in the most in-demand tech skills, ready to contribute from day one.
             </p>
-            <a href="#" className="cta-btn">Partner With Us</a>
+            <a href="#" onClick={()=>navigate('/recuriter_dashboard')}  className="cta-btn">Partner With Us</a>
             
             <div className="value-props-grid">
                 <div className="value-prop-card">
