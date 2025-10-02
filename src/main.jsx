@@ -42,6 +42,7 @@ import JobConfirmationPage from "./Components/Links/Sublinks/confirm_posting.jsx
 import RecruiterAuthPage from "./Components/Links/Sublinks/Recuriters/Login_signup.jsx";
 import RecruiterDashboard from "./Components/Links/Sublinks/Recuriters/Dashboard.jsx";
 import AdminDashboard from "./Components/Links/Sublinks/Admin/Dashboard.jsx";
+import AdminLogin from "./Components/Links/Sublinks/Admin/Login.jsx";
 // import BuildResumePage from './Components/Resume_builder/Resume_buider.jsx';
 
 // Your router configuration is correct!
@@ -50,7 +51,8 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />}>
       <Route path="/" element={<FistSection />} />{" "}
       {/* Use path='' for index routes */}
-      <Route path="/login" element={<AuthPage />} /> {/* Use relative paths */}
+      <Route path="/login" element={<AuthPage />}/> 
+       <Route path="/signup" element={<AuthPage />}/> 
       <Route path="/about" element={<AboutPage />} />
       <Route path="/courses" element={<CoursesPage />} />
       <Route path="/placements" element={<PlacementsPage />} />
@@ -84,6 +86,7 @@ const router = createBrowserRouter(
       <Route path="/recuriter_login" element={<RecruiterAuthPage />} />
       <Route path="/recuriter_dashboard" element={<RecruiterDashboard />} />
       <Route path="/admin_dash" element={<AdminDashboard />} />
+      <Route path="/admin_login" element={<AdminLogin />} />
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
