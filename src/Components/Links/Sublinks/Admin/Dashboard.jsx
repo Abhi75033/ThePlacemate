@@ -3169,7 +3169,7 @@ const AdminDashboard = () => {
         @media (min-width: 768px) { .applicant-table-controls { flex-direction: row; justify-content: space-between; align-items: center; } }
         .applicant-profile-modal { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
         .profile-header { text-align: center; }
-        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--accent-color); color: white; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1rem; }
+        .profile-avatar { width: 70px; height: 70px; border-radius: 50%; background: var(--accent-color); color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem; }
         .profile-name { margin: 0; font-size: 1.5rem; }
         .profile-course { margin: 0.25rem 0; color: var(--accent-color-secondary); }
         .profile-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem; }

@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from "react";
-
+import {jwtDecode} from 'jwt-decode'
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
+import { BASE_URL } from "../Config.base_url";
+import { useAuth } from "../Contexts/AuthContext";
+import UserAvatar from "./UserAvatar";
+import LogoutButton from "./LogoutButton";
 const Header = () => {
   const [activeLink, setActiveLink] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { isLoggedIn, isLoading, logout, user } = useAuth();
+
+
+
 
   // --- Icon Components for Sidebar ---
   const HomeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>;
@@ -15,7 +26,9 @@ const Header = () => {
   const LogoutIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>;
 
 
-  const navLinks = [
+  const DashboardIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>;
+
+  const baseNavLinks = [
     { name: 'Home', path: '/', icon: <HomeIcon /> },
     { name: 'About Us', path: '/about', icon: <AboutIcon /> },
     { name: 'Courses', path: '/courses', icon: <CoursesIcon /> },
@@ -23,10 +36,15 @@ const Header = () => {
     { name: 'Recruiters', path: '/recruiters', icon: <RecruitersIcon /> },
     { name: 'Testimonials', path: '/testimonials', icon: <TestimonialsIcon /> },
     { name: 'Contact', path: '/contact', icon: <ContactIcon /> },
-    
-    {name:"Subscribe", path: '/subscribe', icon:""},
-   
+    { name: "Subscribe", path: '/subscribe', icon: "" },
   ];
+
+  // Add Dashboard link after Subscribe when user is logged in
+  const navLinks = isLoggedIn 
+    ? [...baseNavLinks, { name: 'Dashboard', path: '/student_dashboard', icon: <DashboardIcon /> }]
+    : baseNavLinks;
+
+
 
   useEffect(() => {
     const currentPath = window.location.pathname;
@@ -40,16 +58,44 @@ const Header = () => {
   }, [isMobileMenuOpen]);
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-  const handleLinkClick = (linkName) => {
+  
+  const handleLinkClick = (linkName, event) => {
+      event.preventDefault();
       setActiveLink(linkName);
+      const link = navLinks.find(l => l.name === linkName);
+      if (link) {
+        navigate(link.path);
+      }
       if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+  }
+
+  const handleLogout = () => {
+    logout();
+    setIsMobileMenuOpen(false);
+    navigate("/");
   }
 
   return (
     <>
       <style>{`
       @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Lexend:wght@100..900&display=swap');
-        body { margin: 0; font-family: 'Lexend', sans-serif; padding-top: 90px; }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Smooth page transitions */
+      * {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+      
+      body { 
+        margin: 0; 
+        font-family: 'Lexend', sans-serif; 
+        padding-top: 90px;
+        transition: all 0.3s ease;
+      }
         .bree-serif-regular { font-family: "Bree Serif", serif; font-weight: 400; font-style: normal; }
         .placemate-header { position: fixed; top: 0; left: 0; width: 100%; padding: 0.75rem 1rem; box-sizing: border-box; z-index: 1000; transition: padding 0.3s ease; }
         .header-nav { background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); max-width: 1400px; margin: 0 auto; border-radius: 9999px; padding: 0.5rem; display: flex; align-items: center; justify-content: space-between; transition: padding 0.3s ease; }
@@ -59,8 +105,8 @@ const Header = () => {
         .brand-name { font-size: 1.25rem; font-weight: bold; color: #1E3A8A; }
         .tagline { font-size: 0.75rem; color: #4B5563; margin: 0; transition: display 0.3s ease; }
         .nav-links { display: flex; align-items: center; gap: 0.25rem; }
-        .nav-links a { padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; color: #1E3A8A; }
-        .nav-links a:hover { background-color: rgba(255, 255, 255, 0.5); }
+        .nav-links a { padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); color: #1E3A8A; }
+        .nav-links a:hover { background-color: rgba(255, 255, 255, 0.5); transform: translateY(-1px); }
         .nav-links a.active { background-color: #60A5FA; color: white; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
         .cta-buttons { display: flex; align-items: center; gap: 0.5rem; }
         .login-btn, .signup-btn { padding: 0.6rem 1.25rem; border-radius: 9999px; font-weight: 600; text-decoration: none; transition: all 0.3s ease; white-space: nowrap; }
@@ -93,16 +139,26 @@ const Header = () => {
         .mobile-nav-menu.open { transform: translateX(0); }
         .mobile-menu-brand-header { display: flex; align-items: center; gap: 0.75rem; padding-bottom: 1.5rem; margin-top: 3.5rem; border-bottom: 1px solid #E5E7EB; }
         .mobile-nav-links { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; margin-top: 1.5rem; }
-        .mobile-nav-links a { font-size: 1rem; font-weight: 500; color: #374151; text-decoration: none; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 1rem; }
-        .mobile-nav-links a:hover { background-color: #F3F4F6; color: #1E3A8A; }
+        .mobile-nav-links a { font-size: 1rem; font-weight: 500; color: #374151; text-decoration: none; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 1rem; }
+        .mobile-nav-links a:hover { background-color: #F3F4F6; color: #1E3A8A; transform: translateX(4px); }
         .mobile-nav-links a.active { background-color: #F3F4F6; color: #111827; font-weight: 600; }
         .mobile-user-profile { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid #E5E7EB; display: flex; justify-content: space-between; align-items: center; }
         .user-info { display: flex; align-items: center; gap: 0.75rem; }
         .user-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: #D1D5DB; }
         .user-name { font-weight: 600; color: #111827; }
         .user-email { font-size: 0.875rem; color: #6B7280; }
-        .logout-btn { background: none; border: none; cursor: pointer; color: #6B7280; padding: 0.5rem; }
-        .logout-btn:hover { color: #EF4444; }
+        .logout-btn { 
+          background: none; 
+          border: none; 
+          cursor: pointer; 
+          color: #6B7280; 
+          padding: 0.5rem; 
+          transition: all 0.3s ease;
+        }
+        .logout-btn:hover { 
+          color: #EF4444; 
+          transform: scale(1.1);
+        }
 
         /* --- ENHANCED RESPONSIVE BREAKPOINTS --- */
         
@@ -138,22 +194,54 @@ const Header = () => {
 
       <header className="placemate-header">
         <nav className="header-nav">
-          <a href="/" className="logo-container" onClick={() => handleLinkClick('Home')}>
+          <Link to="/" className="logo-container" onClick={() => handleLinkClick('Home')}>
             <div className="logo-icon"><span>TP</span></div>
             <div>
               <span className="brand-name bree-serif-regular">ThePlacemate</span>
               <p className="tagline">Learn. Build. Earn.</p>
             </div>
-          </a>
+          </Link>
           <div className="nav-links">
             {navLinks.map((link) => (
-              <a key={link.name} href={link.path} onClick={() => handleLinkClick(link.name)} className={activeLink === link.name ? 'active' : ''}>{link.name}</a>
+              <Link 
+                key={link.name} 
+                to={link.path} 
+                onClick={(e) => handleLinkClick(link.name, e)} 
+                className={activeLink === link.name ? 'active' : ''}
+              >
+                {link.name}
+              </Link>
             ))}
           </div>
-          <div className="cta-buttons">
-            <a href="/login" className="login-btn">Login</a>
-            <a href="/signup" className="signup-btn">Signup</a>
-          </div>
+         {isLoading ? (
+  <div className="cta-buttons">
+    <div style={{padding: '0.6rem 1.25rem', color: '#1E3A8A'}}>Loading...</div>
+  </div>
+) : isLoggedIn ? (
+  <div className="user-profile" style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+    <UserAvatar
+      src={user?.profilePicture || "/docs/images/people/profile-picture-5.jpg"}
+      name={user?.name || "User"}
+      size={40}
+      onClick={() => navigate('/student_dashboard')}
+      style={{
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+        border: '2px solid rgba(255,255,255,0.2)'
+      }}
+    />
+    <LogoutButton 
+      onClick={handleLogout}
+      variant="default"
+      size="medium"
+      showText={true}
+    />
+  </div>
+) : (
+  <div className="cta-buttons">
+    <Link to="/login" className="login-btn">Login</Link>
+    <Link to="/signup" className="signup-btn">Signup</Link>
+  </div>
+)}
           <button className={`mobile-menu-toggle ${isMobileMenuOpen ? 'open' : ''}`} onClick={toggleMobileMenu} aria-label="Toggle Menu">
             <div className="hamburger-icon"><span></span><span></span><span></span><span></span></div>
           </button>
@@ -167,24 +255,79 @@ const Header = () => {
         </div>
         <div className="mobile-nav-links">
             {navLinks.map((link) => (
-            <a key={link.name} href={link.path} onClick={() => handleLinkClick(link.name)} className={activeLink === link.name ? 'active' : ''}>
+            <Link 
+              key={link.name}  
+              to={link.path}
+              onClick={(e) => handleLinkClick(link.name, e)} 
+              className={activeLink === link.name ? 'active' : ''}
+            >
                 {link.icon}
                 <span>{link.name}</span>
-            </a>
+            </Link>
             ))}
         </div>
-        <div className="mobile-user-profile">
-            <div className="user-info">
-                <div className="user-avatar"></div>
-                <div>
-                    <div className="user-name">Priya Sharma</div>
-                    <div className="user-email">priya.s@example.com</div>
-                </div>
-            </div>
-            <button className="logout-btn" aria-label="Logout">
-                <LogoutIcon />
-            </button>
-        </div>
+        {isLoggedIn ? (
+          <div className="mobile-user-profile">
+              <div className="user-info">
+                  <UserAvatar
+                    src={user?.profilePicture || "/docs/images/people/profile-picture-5.jpg"}
+                    name={user?.name || "User"}
+                    size={60}
+                    onClick={() => navigate('/')}
+                    style={{
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                      border: '2px solid rgba(255,255,255,0.2)'
+                      
+                    }}
+                  />
+                  <div>
+                      <div className="user-name">Welcome Back, {user?.name || "User"}!</div>
+                      <div className="user-email">Click avatar to go to dashboard</div>
+                  </div>
+              </div>
+              <LogoutButton 
+                onClick={handleLogout}
+                variant="mobile"
+                size="medium"
+                showText={false}
+              />
+          </div>
+        ) : (
+          <div className="mobile-user-profile">
+              <div className="user-info">
+                  <UserAvatar
+                    name="Guest"
+                    size={40}
+                    style={{
+                      backgroundColor: '#e5e7eb',
+                      color: '#6b7280'
+                    }}
+                  />
+                  <div>
+                      <div className="user-name">Not logged in</div>
+                      <div className="user-email">Please login to continue</div>
+                  </div>
+              </div>
+              <Link 
+                to="/login"
+                style={{
+                  color: '#3B82F6',
+                  textDecoration: 'none',
+                  padding: '0.5rem',
+                  borderRadius: '4px',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = '#f3f4f6';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = 'none';
+                }}
+              >
+                  Login
+              </Link>
+          </div>
+        )}
       </div>
     </>
   );

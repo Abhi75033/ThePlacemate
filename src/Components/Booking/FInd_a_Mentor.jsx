@@ -114,7 +114,11 @@ const Step1_FindMentor = () => {
         .mentors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
         .mentor-card { background-color: #F9FAFB; border: 1px solid #F3F4F6; border-radius: 1.5rem; padding: 1.5rem; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .mentor-card:hover { transform: translateY(-8px); box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08); }
-        .mentor-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; border: 3px solid white; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); }
+        .mentor-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; border: 3px solid white; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); flex-shrink: 0; }
+
+        @media (max-width: 768px) {
+            .mentor-avatar { width: 60px; height: 60px; }
+        }
         .mentor-card h3 { font-size: 1.25rem; font-weight: 700; color: #111827; margin: 0; }
         .mentor-card .title { font-size: 0.875rem; color: #6B7280; margin: 0.25rem 0 1rem 0; }
         .expertise-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem; }
@@ -158,7 +162,7 @@ const Step1_FindMentor = () => {
                 <div className="mentors-grid">
                 {filteredMentors.map(mentor => (
                     <div className="mentor-card" key={mentor.id}>
-                    <img src={mentor.avatar} alt={mentor.name} className="mentor-avatar" onError={(e) => { e.target.onerror = null; e.target.src=`https://placehold.co/100x100/E0E7FF/4338CA?text=${mentor.name.charAt(0)}`; }}/>
+                    <img src={mentor.avatar} alt={mentor.name} className="mentor-avatar" onError={(e) => { e.target.onerror = null; e.target.src=`https://placehold.co/80x80/E0E7FF/4338CA?text=${mentor.name.charAt(0)}`; }}/>
                     <h3>{mentor.name}</h3>
                     <p className="title">{mentor.title}</p>
                     <div className="expertise-tags">

@@ -179,7 +179,7 @@ const Step3_BookSession = () => {
             box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.5);
         }
         .summary-header { text-align: center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 1.5rem; margin-bottom: 1.5rem; }
-        .summary-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; border: 4px solid white; }
+        .summary-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; border: 3px solid white; flex-shrink: 0; }
         .summary-header h3 { font-size: 1.5rem; font-weight: 600; margin: 0; }
         .summary-header p { font-size: 0.9rem; color: rgba(255,255,255,0.8); margin: 0.25rem 0 0 0; }
         

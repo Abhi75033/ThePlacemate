@@ -62,11 +62,19 @@ const Step2_MentorProfile = () => {
         }
 
         .mentor-profile-avatar {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #E0E7FF;
+            border: 3px solid #E0E7FF;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .mentor-profile-avatar {
+                width: 80px;
+                height: 80px;
+            }
         }
 
         .mentor-info h1 {
@@ -209,7 +217,7 @@ const Step2_MentorProfile = () => {
         <div className="profile-layout-grid">
             <div className="mentor-details-column">
                 <div className="mentor-header">
-                    <img src={mentor.avatar} alt={mentor.name} className="mentor-profile-avatar" onError={(e) => { e.target.onerror = null; e.target.src=`https://placehold.co/120x120/E0E7FF/4338CA?text=${mentor.name.charAt(0)}`; }}/>
+                    <img src={mentor.avatar} alt={mentor.name} className="mentor-profile-avatar" onError={(e) => { e.target.onerror = null; e.target.src=`https://placehold.co/100x100/E0E7FF/4338CA?text=${mentor.name.charAt(0)}`; }}/>
                     <div className="mentor-info">
                         <h1>{mentor.name}</h1>
                         <p>{mentor.title}</p>

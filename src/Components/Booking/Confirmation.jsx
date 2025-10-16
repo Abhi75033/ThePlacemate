@@ -130,8 +130,8 @@ const BookingConfirmation = () => {
         }
         
         .ticket-avatar {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid white;

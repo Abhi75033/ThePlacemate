@@ -1289,7 +1289,7 @@ const StudentDashboard = () => {
                 .session-list { display: flex; flex-direction: column; gap: 1rem; }
                 .session-card-new { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 1.5rem; padding: 1rem; border-radius: 1.25rem; background-color: #F9FAFB; border: 1px solid #F3F4F6; transition: all 0.3s ease; }
                 .session-card-new:hover { transform: translateY(-4px); box-shadow: 0 8px 25px -8px rgba(0,0,0,0.08); border-color: #E5E7EB; }
-                .session-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+                .session-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
                 .session-details-new h4 { margin: 0; font-size: 1rem; font-weight: 600; color: #111827; }
                 .session-details-new p { margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #6B7280; }
                 .session-time-new { text-align: right; color: #4B5563; }
@@ -1354,7 +1354,7 @@ const StudentDashboard = () => {
                 .my-course-info { padding: 1.5rem; }
                 .mentor-grid-page { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
                 .mentor-card-page { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 1.5rem; padding: 1.5rem; text-align: center; }
-                .mentor-avatar-page { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; }
+                .mentor-avatar-page { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; flex-shrink: 0; }
                 .mentor-card-page h3 { font-size: 1.25rem; font-weight: 600; margin: 0; }
                 .mentor-title-page { font-size: 0.875rem; color: #6B7280; margin: 0.25rem 0 1rem 0; }
                 .mentor-tags-page { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
@@ -1362,7 +1362,7 @@ const StudentDashboard = () => {
                 .profile-banner { background: linear-gradient(to right, #6D28D9, #4F46E5); border-radius: 1.5rem; padding: 2rem; margin-bottom: 2rem; }
                 .profile-banner-content { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
                 .profile-avatar-container { position: relative; }
-                .profile-avatar-large { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+                .profile-avatar-large { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.2); flex-shrink: 0; max-width: 100px; max-height: 100px; }
                 .change-picture-btn { position: absolute; bottom: 5px; right: 5px; background: white; border: 1px solid #E5E7EB; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #4F46E5; transition: all 0.2s ease; }
                 .change-picture-btn:hover { background-color: #F3F4F6; transform: scale(1.1); }
                 .profile-header-info { flex-grow: 1; }
@@ -1490,6 +1490,11 @@ const StudentDashboard = () => {
                     .collapse-btn { display: none; }
                     .mobile-menu-btn { display: block; }
                     .page-overlay.active { display: block; }
+                    .profile-banner-content { flex-direction: column; text-align: center; gap: 1rem; }
+                    .profile-avatar-large { width: 80px; height: 80px; }
+                    .profile-header-actions { justify-content: center; }
+                    .session-avatar { width: 40px; height: 40px; }
+                    .mentor-avatar-page { width: 60px; height: 60px; }
                 }
             `}</style>
             <div className="dashboard-body">

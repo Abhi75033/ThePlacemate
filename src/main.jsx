@@ -43,6 +43,7 @@ import RecruiterAuthPage from "./Components/Links/Sublinks/Recuriters/Login_sign
 import RecruiterDashboard from "./Components/Links/Sublinks/Recuriters/Dashboard.jsx";
 import AdminDashboard from "./Components/Links/Sublinks/Admin/Dashboard.jsx";
 import AdminLogin from "./Components/Links/Sublinks/Admin/Login.jsx";
+import AuthCallback from "./Components/Auth/AuthCallback.jsx";
 // import BuildResumePage from './Components/Resume_builder/Resume_buider.jsx';
 
 // Your router configuration is correct!
@@ -52,7 +53,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<FistSection />} />{" "}
       {/* Use path='' for index routes */}
       <Route path="/login" element={<AuthPage />}/> 
-       <Route path="/signup" element={<AuthPage />}/> 
+       {/* <Route path="/signup" element={<AuthPage />}/>  */}
       <Route path="/about" element={<AboutPage />} />
       <Route path="/courses" element={<CoursesPage />} />
       <Route path="/placements" element={<PlacementsPage />} />
@@ -87,6 +88,7 @@ const router = createBrowserRouter(
       <Route path="/recuriter_dashboard" element={<RecruiterDashboard />} />
       <Route path="/admin_dash" element={<AdminDashboard />} />
       <Route path="/admin_login" element={<AdminLogin />} />
+      <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
