@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaYoutube } from "react-icons/fa";
 
 const ContactPage = () => {
   const [openFaq, setOpenFaq] = useState(0); // Default first FAQ to be open
@@ -256,6 +257,13 @@ const ContactPage = () => {
                     <div className="social-card-header">
                         <div className="social-icon"><InstagramIcon /></div>
                         <h3 className="social-title">Instagram</h3>
+                    </div>
+                    <p className="social-description">See behind-the-scenes content and student success stories.</p>
+                </a>
+                 <a href="#" className="social-card">
+                    <div className="social-card-header">
+                        <div className="social-icon"><FaYoutube style={{fontSize:"30px", color:"red"}} /></div>
+                        <h3 className="social-title">YouTube</h3>
                     </div>
                     <p className="social-description">See behind-the-scenes content and student success stories.</p>
                 </a>

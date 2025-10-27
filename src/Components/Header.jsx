@@ -6,6 +6,7 @@ import { BASE_URL } from "../Config.base_url";
 import { useAuth } from "../Contexts/AuthContext";
 import UserAvatar from "./UserAvatar";
 import LogoutButton from "./LogoutButton";
+import logo from '../assets/logo.png';
 const Header = () => {
   const [activeLink, setActiveLink] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -195,7 +196,7 @@ const Header = () => {
       <header className="placemate-header">
         <nav className="header-nav">
           <Link to="/" className="logo-container" onClick={() => handleLinkClick('Home')}>
-            <div className="logo-icon"><span>TP</span></div>
+            <div className="logo-icon"><span><img src={logo} width={40} alt="Logo" /></span></div>
             <div>
               <span className="brand-name bree-serif-regular">ThePlacemate</span>
               <p className="tagline">Learn. Build. Earn.</p>
@@ -250,7 +251,7 @@ const Header = () => {
 
       <div className={`mobile-nav-menu ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mobile-menu-brand-header">
-            <div className="logo-icon"><span>TP</span></div>
+            <div className="logo-icon"><span><img src=""/></span></div>
             <div><span className="brand-name bree-serif-regular">ThePlacemate</span></div>
         </div>
         <div className="mobile-nav-links">

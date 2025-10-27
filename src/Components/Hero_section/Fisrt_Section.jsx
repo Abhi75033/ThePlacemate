@@ -7,6 +7,7 @@ import SuccessStories from "./Success_stories";
 import FAQ from "./FAQ";
 import MeetOurInstructors from "./Meet_our_instructor";
 import Footer from "../Footer";
+import AIInterviewPromo from "./Ai_room";
 
 
 function FistSection() {
@@ -80,6 +81,7 @@ function FistSection() {
 
 <Why_we_Choose/>
 <InterviewPrepAI/>
+<AIInterviewPromo/>
 <HowItWorks/>
 <SuccessStories/>
 <MeetOurInstructors/>

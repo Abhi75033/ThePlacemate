@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import './index.css';
 import {
   RouterProvider,
   createBrowserRouter,
@@ -44,6 +45,7 @@ import RecruiterDashboard from "./Components/Links/Sublinks/Recuriters/Dashboard
 import AdminDashboard from "./Components/Links/Sublinks/Admin/Dashboard.jsx";
 import AdminLogin from "./Components/Links/Sublinks/Admin/Login.jsx";
 import AuthCallback from "./Components/Auth/AuthCallback.jsx";
+import AI_Room from "./Components/Links/Sublinks/AI_room/Ai_room.jsx";
 // import BuildResumePage from './Components/Resume_builder/Resume_buider.jsx';
 
 // Your router configuration is correct!
@@ -89,6 +91,7 @@ const router = createBrowserRouter(
       <Route path="/admin_dash" element={<AdminDashboard />} />
       <Route path="/admin_login" element={<AdminLogin />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
+      <Route path="/ai_room" element={<AI_Room/>}/>
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
