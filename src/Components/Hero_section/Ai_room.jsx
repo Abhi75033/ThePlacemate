@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Icon for the button
 const ArrowRightIcon = () => (
@@ -15,6 +16,7 @@ const AISparkleIcon = ({ className }) => (
 );
 
 const AIInterviewPromo = () => {
+  const navigate = useNavigate();
   return (
     <section className="bg-white py-20 sm:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -113,7 +115,7 @@ const AIInterviewPromo = () => {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
               <a
-                href="/ai_room" // This should eventually link to your AI Interview Room page
+                onClick={()=>navigate('/ai_room')} // This should eventually link to your AI Interview Room page
                 className="group inline-flex items-center justify-center bg-indigo-600 text-white font-semibold text-sm sm:text-base py-2.5 px-6 sm:py-3 sm:px-8 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-indigo-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-indigo-500"
               >
                 Try the AI Interview Room
